@@ -149,9 +149,22 @@ export interface Citation {
 
 export const AXIOM_APP_BASE = 'https://app.axiom-foundation.org';
 
-/** Pull `name` → citation (source string + corpus path) out of the module text. */
+/** The module's own corpus page (header `source_verification.corpus_citation_path`) —
+ *  the one Axiom app URL guaranteed to exist for this encoding. Amendment SIs cited in
+ *  proof atoms are not always indexed, so all citation links point here. */
+export function extractModulePath(moduleText: string): string | null {
+  for (const line of moduleText.split('\n')) {
+    if (/^\s*-\s*name:/.test(line)) break; // stop at the first rule
+    const cp = line.match(/^\s*corpus_citation_path:\s*(\S+)\s*$/);
+    if (cp) return cp[1];
+  }
+  return null;
+}
+
+/** Pull `name` → citation (source string + module corpus path) out of the module text. */
 export function extractCitations(moduleText: string): Map<string, Citation> {
   const map = new Map<string, Citation>();
+  const modulePath = extractModulePath(moduleText);
   const lines = moduleText.split('\n');
   let current: string | null = null;
   for (const line of lines) {
@@ -159,12 +172,7 @@ export function extractCitations(moduleText: string): Map<string, Citation> {
     if (nm) current = nm[1];
     if (!current) continue;
     const src = line.match(/^\s*source:\s*(.+?)\s*$/);
-    if (src && !map.has(current)) map.set(current, { source: src[1], path: null });
-    const cp = line.match(/^\s*corpus_citation_path:\s*(\S+)\s*$/);
-    if (cp) {
-      const existing = map.get(current);
-      if (existing && existing.path == null) existing.path = cp[1];
-    }
+    if (src && !map.has(current)) map.set(current, { source: src[1], path: modulePath });
   }
   return map;
 }
