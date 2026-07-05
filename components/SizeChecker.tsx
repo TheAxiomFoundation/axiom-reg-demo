@@ -2,12 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
+  AXIOM_APP_BASE,
   MODULE_TARGET,
   getEngine,
   run,
   extractCitations,
   extractParameterVersions,
   versionAt,
+  type Citation,
   type ExecutionResponse,
   type InputRecord,
   type OutputValue,
@@ -48,7 +50,7 @@ function holds(v: OutputValue | undefined): boolean | null {
 export default function SizeChecker() {
   const [ready, setReady] = useState(false);
   const [version, setVersion] = useState('');
-  const [citations, setCitations] = useState<Map<string, string>>(new Map());
+  const [citations, setCitations] = useState<Map<string, Citation>>(new Map());
   const [employeeVersions, setEmployeeVersions] = useState<Array<{ effective_from: string; value: number }>>([]);
   const [error, setError] = useState<string | null>(null);
 
@@ -285,12 +287,26 @@ export default function SizeChecker() {
             <div className="cites">
               <h3>Cited to source</h3>
               <ul>
-                <li>{citations.get('small_company_annual_turnover_threshold') ?? 'Companies Act 2006, s.382'}</li>
-                <li>
-                  {citations.get('small_company_balance_sheet_total_threshold') ?? 'Companies Act 2006, s.382'}
-                </li>
-                <li>{citations.get('small_company_number_of_employees_threshold') ?? 'Companies Act 2006, s.382'}</li>
-                <li>{citations.get('company_qualifies_as_small') ?? 'Companies Act 2006, s.382(1)–(2)'}</li>
+                {[
+                  'small_company_annual_turnover_threshold',
+                  'small_company_balance_sheet_total_threshold',
+                  'small_company_number_of_employees_threshold',
+                  'company_qualifies_as_small',
+                ].map((rule) => {
+                  const c = citations.get(rule);
+                  const text = c?.source ?? 'Companies Act 2006, s.382';
+                  return (
+                    <li key={rule}>
+                      {c?.path ? (
+                        <a href={`${AXIOM_APP_BASE}/${c.path}`} target="_blank" rel="noreferrer">
+                          {text}
+                        </a>
+                      ) : (
+                        text
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
               <p className="hint" style={{ marginTop: 10 }}>
                 Computed by axiom-rules-engine v{version} (WebAssembly) from the rulespec-uk encoding.

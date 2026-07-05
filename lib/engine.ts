@@ -140,16 +140,31 @@ export function versionAt(
   return v;
 }
 
-/** Pull `name` → `source:` citation strings out of the module text. */
-export function extractCitations(moduleText: string): Map<string, string> {
-  const map = new Map<string, string>();
+export interface Citation {
+  /** Human citation string, e.g. "Companies Act 2006 s.382(3), as amended by …" */
+  source: string;
+  /** Axiom corpus path, e.g. "uk/statute/ukpga/2006/46/382" — links to the app page. */
+  path: string | null;
+}
+
+export const AXIOM_APP_BASE = 'https://app.axiom-foundation.org';
+
+/** Pull `name` → citation (source string + corpus path) out of the module text. */
+export function extractCitations(moduleText: string): Map<string, Citation> {
+  const map = new Map<string, Citation>();
   const lines = moduleText.split('\n');
   let current: string | null = null;
   for (const line of lines) {
     const nm = line.match(/^\s*-\s*name:\s*(\S+)\s*$/);
     if (nm) current = nm[1];
-    const src = line.match(/^\s*source:\s*(.+)\s*$/);
-    if (src && current && !map.has(current)) map.set(current, src[1]);
+    if (!current) continue;
+    const src = line.match(/^\s*source:\s*(.+?)\s*$/);
+    if (src && !map.has(current)) map.set(current, { source: src[1], path: null });
+    const cp = line.match(/^\s*corpus_citation_path:\s*(\S+)\s*$/);
+    if (cp) {
+      const existing = map.get(current);
+      if (existing && existing.path == null) existing.path = cp[1];
+    }
   }
   return map;
 }
