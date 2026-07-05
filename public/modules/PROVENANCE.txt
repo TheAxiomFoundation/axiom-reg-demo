@@ -1,0 +1,4 @@
+module: uk/statutes/ukpga/2006/46/382.yaml
+source repo: TheAxiomFoundation/rulespec-uk @ 3e3bfc5
+wasm engine: axiom-rules-engine wasm pkg built from same checkout
+synced: 2026-07-05T01:36Z
