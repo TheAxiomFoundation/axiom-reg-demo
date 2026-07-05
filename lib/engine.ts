@@ -153,8 +153,18 @@ export const AXIOM_APP_BASE = 'https://app.axiom-foundation.org';
  *  the one Axiom app URL guaranteed to exist for this encoding. Amendment SIs cited in
  *  proof atoms are not always indexed, so all citation links point here. */
 export function extractModulePath(moduleText: string): string | null {
+  let inPathsList = false;
   for (const line of moduleText.split('\n')) {
     if (/^\s*-\s*name:/.test(line)) break; // stop at the first rule
+    if (inPathsList) {
+      const item = line.match(/^\s*-\s*(\S+)\s*$/);
+      if (item) return item[1]; // first entry is the provision itself
+      inPathsList = false;
+    }
+    if (/^\s*corpus_citation_paths:\s*$/.test(line)) {
+      inPathsList = true;
+      continue;
+    }
     const cp = line.match(/^\s*corpus_citation_path:\s*(\S+)\s*$/);
     if (cp) return cp[1];
   }
