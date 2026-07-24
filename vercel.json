@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "https://axiom.org/reg-demo",
+      "permanent": true
+    }
+  ]
+}

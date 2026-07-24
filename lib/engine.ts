@@ -11,8 +11,10 @@ import init, {
 } from './pkg/axiom_rules_engine_wasm';
 
 export const MODULE_TARGET = 'uk:statutes/ukpga/2006/46/382';
-const MODULE_URL = '/modules/382.yaml';
-const WASM_URL = '/wasm/axiom_rules_engine_wasm_bg.wasm';
+// Public assets fetched by absolute URL at runtime — Next's basePath does not
+// rewrite hand-written strings, so the /reg-demo prefix is applied here.
+const MODULE_URL = '/reg-demo/modules/382.yaml';
+const WASM_URL = '/reg-demo/wasm/axiom_rules_engine_wasm_bg.wasm';
 
 export type FactValue =
   | { kind: 'bool'; value: boolean }
