@@ -2,8 +2,18 @@
   "redirects": [
     {
       "source": "/",
-      "destination": "https://axiom.org/reg-demo",
+      "destination": "https://axiom.org/gallery/reg-demo",
       "permanent": true
+    },
+    {
+      "source": "/reg-demo",
+      "destination": "/gallery/reg-demo",
+      "permanent": false
+    },
+    {
+      "source": "/reg-demo/:path(.*)",
+      "destination": "/gallery/reg-demo/:path(.*)",
+      "permanent": false
     }
   ]
 }

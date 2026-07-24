@@ -5,7 +5,7 @@ export default function Page() {
     <div className="wrap">
       <header className="site">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/reg-demo/logos/axiom-foundation.svg" alt="Axiom Foundation" />
+        <img src="/gallery/reg-demo/logos/axiom-foundation.svg" alt="Axiom Foundation" />
         <span className="site-tag">UK regulation · computed</span>
       </header>
 
