@@ -2,10 +2,12 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://axiom.org'),
   title: 'Small company checker — Axiom',
   description:
     'Companies Act 2006 s.382, computed in your browser from the Axiom encoding — cited, time-aware, executable.',
-  icons: { icon: '/favicon.svg' },
+  alternates: { canonical: '/reg-demo' },
+  icons: { icon: '/reg-demo/favicon.svg' },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
