@@ -12,7 +12,6 @@ export default function Page() {
             <img src="/gallery/reg-demo/logos/axiom-foundation.svg" alt="Axiom Foundation" />
           </a>
           <Link href="/" className="brand-title">
-            <span className="brand-eyebrow">Interactive</span>
             <span className="brand-name">Small company checker</span>
           </Link>
         </span>
