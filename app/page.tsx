@@ -1,12 +1,23 @@
+import Link from 'next/link';
+
 import SizeChecker from '@/components/SizeChecker';
 
 export default function Page() {
   return (
     <div className="wrap">
       <header className="site">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/reg-demo/logos/axiom-foundation.svg" alt="Axiom Foundation" />
-        <span className="site-tag">UK regulation · computed</span>
+        <span className="brand">
+          <a href="https://axiom-foundation.org" aria-label="Axiom Foundation">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/gallery/reg-demo/logos/axiom-foundation.svg" alt="Axiom Foundation" />
+          </a>
+          <Link href="/" className="brand-title">
+            <span className="brand-name">Small company checker</span>
+          </Link>
+        </span>
+        <a href="https://axiom.org/demos" className="all-demos">
+          All demos
+        </a>
       </header>
 
       <section className="hero">
